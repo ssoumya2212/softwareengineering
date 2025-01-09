@@ -1,0 +1,25 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on push to main branch
+  release:
+    types: [created]  # Trigger deployment when a new release is created
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # Check out the repository code
+
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.5.3  # Use SSH key to authenticate with your server
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}  # Store private key in GitHub secrets
+
+      - name: Deploy to server
+        run: |
+          ssh user@your-server.com 'bash -s' < ./deploy-scripts/deploy.sh  # Custom script to deploy your app
