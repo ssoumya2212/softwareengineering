@@ -1,0 +1,5 @@
+- name: Build Docker Image
+  run: docker build -t my-app .
+
+- name: Push Docker Image
+  run: docker push my-app
